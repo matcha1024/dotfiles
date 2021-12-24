@@ -13,8 +13,7 @@ sudo chsh
   Login Shell [/bin/bash]: /usr/bin/fish
 ```
 
-# fisher Install & Add Theme (bobthefish)
+# fisher Install
 ```
 curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher
-fisher install oh-my-fish/theme-bobthefish
 ```
