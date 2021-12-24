@@ -16,7 +16,3 @@ set -g theme_display_cmd_duration no
 set -g theme_avoid_ambiguous_glyphs yes
 set -g theme_display_date no
 set -g theme_show_exit_status no
-
-# Pyenv
-status is-login; and pyenv init --path | source
-status is-interactive; and pyenv init - | source
