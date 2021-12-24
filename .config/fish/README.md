@@ -9,8 +9,8 @@ sudo apt-add-repository ppa:fish-shell/release-3
 sudo apt update
 sudo apt install fish
 
-chsh
-  loginshell[/bin/bash]: /usr/bin/fish
+sudo chsh
+  Login Shell [/bin/bash]: /usr/bin/fish
 ```
 
 # fisher Install & Add Theme (bobthefish)
