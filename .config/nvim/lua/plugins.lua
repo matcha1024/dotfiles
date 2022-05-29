@@ -1,40 +1,49 @@
 vim.cmd[[packadd packer.nvim]]
 
 require'packer'.startup(function()
-	use'tpope/vim-fugitive'
-	use'tpope/vim-rhubarb'
-	
-	use{
-		'nvim-lualine/lualine.nvim',
-		requires = {'kyazdani42/nvim-web-devicons', opt = true},
-	}
+        use'tpope/vim-fugitive'
+        use'tpope/vim-rhubarb'
 
-	use 'kristijanhusak/defx-git'
-	use 'kristijanhusak/defx-icons'
-	use 'Shougo/defx.nvim'
-	use 'neovim/nvim-lspconfig'
-	use {'tami5/lspsaga.nvim', branch = 'nvim51'}
-	use 'folke/lsp-colors.nvim'
-	use 'L3MON4D3/LuaSnip'
-	use 'hrsh7th/cmp-nvim-lsp'
-	use 'hrsh7th/cmp-buffer'
-	use 'hrsh7th/nvim-cmp'
-	use 'onsails/lspkind-nvim'
-	use 'nvim-treesitter/nvim-treesitter'
-	use 'nvim-lua/popup.nvim'
-	use 'nvim-lua/plenary.nvim'
-	use 'nvim-telescope/telescope.nvim'
-	use 'windwp/nvim-autopairs'
-	use 'akinsho/toggleterm.nvim'
-	use {'yutkat/taskrun.nvim', config=function() require("taskrun").setup() end}
-	use 'rcarriga/nvim-notify'
-	use 'EdenEast/nightfox.nvim'
+        use{
+                'nvim-lualine/lualine.nvim',
+                requires = {'kyazdani42/nvim-web-devicons', opt = true},
+        }
+
+        use 'kristijanhusak/defx-git'
+        use 'kristijanhusak/defx-icons'
+        use 'Shougo/defx.nvim'
+        use 'neovim/nvim-lspconfig'
+        use {'tami5/lspsaga.nvim', branch = 'nvim51'}
+        use 'folke/lsp-colors.nvim'
+        use 'L3MON4D3/LuaSnip'
+        use 'hrsh7th/cmp-nvim-lsp'
+        use 'hrsh7th/cmp-buffer'
+        use 'hrsh7th/nvim-cmp'
+        use 'onsails/lspkind-nvim'
+        use 'nvim-treesitter/nvim-treesitter'
+        use 'nvim-lua/popup.nvim'
+        use 'nvim-lua/plenary.nvim'
+        use 'nvim-telescope/telescope.nvim'
+        use 'windwp/nvim-autopairs'
+        use 'akinsho/toggleterm.nvim'
+        use 'rcarriga/nvim-notify'
+        use 'EdenEast/nightfox.nvim'
+        use "williamboman/nvim-lsp-installer"
+        use {
+    'goolord/alpha-nvim',
+
+    requires = { 'kyazdani42/nvim-web-devicons' },
+    config = function ()
+        require'alpha'.setup(require'alpha.themes.startify'.config)
+    end
+}
+        use 'j-hui/fidget.nvim'
 end)
 
 require('lualine').setup {
   options = {
     icons_enabled = true,
-    theme = 'solarized_dark',
+    theme = 'nord',
     section_separators = {left = '', right = ''},
     component_separators = {left = '', right = ''},
     disabled_filetypes = {}
@@ -71,86 +80,23 @@ require('lualine').setup {
   extensions = {'fugitive'}
 }
 
-local on_attach = function(client, bufnr)
-	  -- Mappings.
-  local opts = { noremap=true, silent=true }
-
-  -- See `:help vim.lsp.*` for documentation on any of the below functions
-  buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  --buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  --buf_set_keymap('i', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-  buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-  buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-  buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-  buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-  buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-  buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-  buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-  --buf_set_keymap('n', '<C-j>', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-  buf_set_keymap('n', '<S-C-j>', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-  buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-  buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
-
-  -- formatting
-  if client.name == 'tsserver' then
-    client.resolved_capabilities.document_formatting = false
-  end
-
-  if client.resolved_capabilities.document_formatting then
-    vim.api.nvim_command [[augroup Format]]
-    vim.api.nvim_command [[autocmd! * <buffer>]]
-    vim.api.nvim_command [[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_seq_sync()]]
-    vim.api.nvim_command [[augroup END]]
-  end
-
-  --protocol.SymbolKind = { }
-  protocol.CompletionItemKind = {
-    '', -- Text
-    '', -- Method
-    '', -- Function
-    '', -- Constructor
-    '', -- Field
-    '', -- Variable
-    '', -- Class
-    'ﰮ', -- Interface
-    '', -- Module
-    '', -- Property
-    '', -- Unit
-    '', -- Value
-    '', -- Enum
-    '', -- Keyword
-    '﬌', -- Snippet
-    '', -- Color
-    '', -- File
-    '', -- Reference
-    '', -- Folder
-    '', -- EnumMember
-    '', -- Constant
-    '', -- Struct
-    '', -- Event
-    'ﬦ', -- Operator
-    '', -- TypeParameter
-  }
-end
 
 require('lspsaga').init_lsp_saga{
-	error_sign = '',
+        error_sign = '',
   warn_sign = '',
   hint_sign = '',
   infor_sign = '',
   border_style = "round",
 }
 
+
 require('cmp').setup({
-	snippet = {
-		expand = function(args)
-			require('luasnip').lsp_expand(args.body)
-		end,
-	},
-	mapping = {
+        snippet = {
+                expand = function(args)
+                        require('luasnip').lsp_expand(args.body)
+                end,
+        },
+        mapping = {
       ['<C-d>'] = require('cmp').mapping.scroll_docs(-4),
       ['<C-f>'] = require('cmp').mapping.scroll_docs(4),
       ['<C-Space>'] = require('cmp').mapping.complete(),
@@ -166,31 +112,31 @@ require('cmp').setup({
       { name = 'buffer' },
     }),
     formatting = {
-	    format = require('lspkind').cmp_format({with_text = false, maxwidth = 50})
+            format = require('lspkind').cmp_format({with_text = false, maxwidth = 50})
     }
 })
 vim.cmd[[highlight! default link CmpItemKind CmpItemMenuDefault]]
 
 require('nvim-treesitter.configs').setup{
-	highlight = {
-		enable = true,
-		disable = {},
-	},
-	indent = {
-		enable = true,
-		disable = {},
-	},
+        highlight = {
+                enable = true,
+                disable = {},
+        },
+        indent = {
+                enable = true,
+                disable = {},
+        },
 }
 
 vim.api.nvim_set_keymap('n', ';f', '<cmd>Telescope find_files<CR>', {noremap=true, silent=true})
 require('telescope').setup{
-	defaults = {
-		mappings = {
-			n = {
-				["<C-j>"] = require('telescope.actions').close
-			},
-		},
-	}
+        defaults = {
+                mappings = {
+                        n = {
+                                ["<C-j>"] = require('telescope.actions').close
+                        },
+                },
+        }
 }
 
 require('nvim-autopairs').setup{}
@@ -208,13 +154,71 @@ require("toggleterm").setup{
   close_on_exit = true, -- close the terminal window when the process exits
 }
 
-require('taskrun').setup{}
 
 vim.cmd("colorscheme nordfox")
 require('nightfox').setup({
-	options = {
-		styles = {
-			functions = "italic",
-		}
-	}
+        options = {
+                styles = {
+                        functions = "italic",
+                }
+        }
 })
+
+require('alpha').setup(require'alpha.themes.startify'.config)
+
+local on_attach = function(client, bufnr)
+  local function buf_set_keymap(...)
+    vim.api.nvim_buf_set_keymap(bufnr, ...)
+  end
+
+  -- LSPサーバーのフォーマット機能を無効にする
+  -- client.resolved_capabilities.document_formatting = false
+
+  local opts = { noremap = true, silent = true }
+  buf_set_keymap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
+  buf_set_keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
+  buf_set_keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
+  buf_set_keymap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
+  buf_set_keymap("n", "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
+  buf_set_keymap("n", "<space>wa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", opts)
+  buf_set_keymap("n", "<space>wr", "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", opts)
+  buf_set_keymap("n", "<space>wl", "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>", opts)
+  buf_set_keymap("n", "<space>D", "<cmd>lua vim.lsp.buf.type_definition()<CR>", opts)
+  buf_set_keymap("n", "<space>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
+  buf_set_keymap("n", "<space>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
+  buf_set_keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
+  buf_set_keymap("n", "<space>e", "<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>", opts)
+  buf_set_keymap("n", "[d", "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>", opts)
+  buf_set_keymap("n", "]d", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>", opts)
+  buf_set_keymap("n", "<space>q", "<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>", opts)
+  buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+end
+
+local lsp_installer = require "nvim-lsp-installer"
+local lspconfig = require "lspconfig"
+lsp_installer.setup()
+for _, server in ipairs(lsp_installer.get_installed_servers()) do
+  lspconfig[server.name].setup {
+                capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities()),
+    on_attach = on_attach,
+
+  }
+end
+
+    vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+      vim.lsp.diagnostic.on_publish_diagnostics, {
+        -- disable virtual text
+        virtual_text = true,
+
+        -- show signs
+        signs = true,
+
+        -- delay update diagnostics
+        update_in_insert = false,
+      }
+)
+
+
+require("fidget").setup{}
+
+vim.opt.completeopt = "menu,menuone,noselect"
