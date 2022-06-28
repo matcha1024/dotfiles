@@ -38,6 +38,7 @@ require'packer'.startup(function()
     end
 }
         use 'j-hui/fidget.nvim'
+        use {'akinsho/bufferline.nvim', tag = "v2.*", requires = 'kyazdani42/nvim-web-devicons'}
 end)
 
 require('lualine').setup {
@@ -150,7 +151,10 @@ require("toggleterm").setup{
   insert_mappings = true, -- whether or not the open mapping applies in insert mode
   terminal_mappings = true, -- whether or not the open mapping applies in the opened terminals
   persist_size = true,
-  direction = 'horizontal',
+  direction = 'float',
+  float_opts = {
+                border = 'curved',
+        },
   close_on_exit = true, -- close the terminal window when the process exits
 }
 
@@ -222,3 +226,16 @@ end
 require("fidget").setup{}
 
 vim.opt.completeopt = "menu,menuone,noselect"
+vim.opt.termguicolors = true
+require("bufferline").setup{
+        options = {
+                diagnostics = "nvim_lsp",
+                diagnostics_update_in_insert = false,
+                show_buffer_close_icons = false,
+                show_close_icon = false
+        }
+}
+vim.api.nvim_set_keymap("n", "<C-l>", "<cmd>BufferLineCycleNext<CR>", {noremap=true, silent=true})
+vim.api.nvim_set_keymap("n", "<C-h>", "<cmd>BufferLineCyclePrev<CR>", {noremap=true, silent=true})
+vim.api.nvim_set_keymap("n", "<C-w>", "<cmd>bdelete<CR>", {noremap=true, silent=true})
+vim.api.nvim_set_keymap("n", "<C-t>", "<cmd>tabnew<CR>", {noremap=true, silent=true})
