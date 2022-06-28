@@ -239,3 +239,4 @@ vim.api.nvim_set_keymap("n", "<C-l>", "<cmd>BufferLineCycleNext<CR>", {noremap=t
 vim.api.nvim_set_keymap("n", "<C-h>", "<cmd>BufferLineCyclePrev<CR>", {noremap=true, silent=true})
 vim.api.nvim_set_keymap("n", "<C-w>", "<cmd>bdelete<CR>", {noremap=true, silent=true})
 vim.api.nvim_set_keymap("n", "<C-t>", "<cmd>tabnew<CR>", {noremap=true, silent=true})
+vim.api.nvim_set_keymap("n", "<C-t>", "<cmd>tabnew<CR>", {noremap=true, silent=true})
