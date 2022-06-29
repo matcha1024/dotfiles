@@ -13,7 +13,7 @@ require'packer'.startup(function()
         use 'kristijanhusak/defx-icons'
         use 'Shougo/defx.nvim'
         use 'neovim/nvim-lspconfig'
-        use {'tami5/lspsaga.nvim', branch = 'nvim51'}
+        use 'tami5/lspsaga.nvim'
         use 'folke/lsp-colors.nvim'
         use 'L3MON4D3/LuaSnip'
         use 'hrsh7th/cmp-nvim-lsp'
@@ -34,6 +34,7 @@ require'packer'.startup(function()
         use {'akinsho/bufferline.nvim', tag = "v2.*", requires = 'kyazdani42/nvim-web-devicons'}
         use 'sidebar-nvim/sidebar.nvim'
         use 'lukas-reineke/indent-blankline.nvim'
+        use 'petertriho/nvim-scrollbar'
 end)
 
 require('lualine').setup {
@@ -52,7 +53,7 @@ require('lualine').setup {
       path = 0 -- 0 = just filename, 1 = relative path, 2 = absolute path
     }},
     lualine_x = {
-      { 'diagnostics', sources = {"nvim_diagnostic"}, symbols = {error = ' ', warn = ' ', info = ' ', hint = ' '} },
+      { 'diagnostics', sources = {"nvim_diagnostic"}, symbols = {error = ' ', warn = ' ', info = ' ', hint = ' '} },
       'encoding',
       'filetype'
     },
@@ -76,11 +77,11 @@ require('lualine').setup {
 }
 
 
-require('lspsaga').init_lsp_saga{
-        error_sign = '',
-  warn_sign = '',
-  hint_sign = '',
-  infor_sign = '',
+require('lspsaga').setup{
+        error_sign = '',
+  warn_sign = '',
+  hint_sign = '',
+  infor_sign = '',
   border_style = "round",
 }
 
@@ -246,3 +247,5 @@ require("sidebar-nvim").setup({
 })
 
 require("indent_blankline").setup{}
+
+require("scrollbar").setup()
