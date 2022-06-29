@@ -29,22 +29,16 @@ require'packer'.startup(function()
         use 'rcarriga/nvim-notify'
         use 'EdenEast/nightfox.nvim'
         use "williamboman/nvim-lsp-installer"
-        use {
-    'goolord/alpha-nvim',
-
-    requires = { 'kyazdani42/nvim-web-devicons' },
-    config = function ()
-        require'alpha'.setup(require'alpha.themes.startify'.config)
-    end
-}
+        use 'goolord/alpha-nvim'
         use 'j-hui/fidget.nvim'
         use {'akinsho/bufferline.nvim', tag = "v2.*", requires = 'kyazdani42/nvim-web-devicons'}
+        use 'sidebar-nvim/sidebar.nvim'
+        use 'lukas-reineke/indent-blankline.nvim'
 end)
 
 require('lualine').setup {
   options = {
     icons_enabled = true,
-    theme = 'nord',
     section_separators = {left = '', right = ''},
     component_separators = {left = '', right = ''},
     disabled_filetypes = {}
@@ -159,7 +153,7 @@ require("toggleterm").setup{
 }
 
 
-vim.cmd("colorscheme nordfox")
+vim.cmd("colorscheme nightfox")
 require('nightfox').setup({
         options = {
                 styles = {
@@ -175,8 +169,6 @@ local on_attach = function(client, bufnr)
     vim.api.nvim_buf_set_keymap(bufnr, ...)
   end
 
-  -- LSPサーバーのフォーマット機能を無効にする
-  -- client.resolved_capabilities.document_formatting = false
 
   local opts = { noremap = true, silent = true }
   buf_set_keymap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
@@ -232,11 +224,25 @@ require("bufferline").setup{
                 diagnostics = "nvim_lsp",
                 diagnostics_update_in_insert = false,
                 show_buffer_close_icons = false,
-                show_close_icon = false
+                show_close_icon = false,
+                show_tab_indicators = false
         }
 }
 vim.api.nvim_set_keymap("n", "<C-l>", "<cmd>BufferLineCycleNext<CR>", {noremap=true, silent=true})
 vim.api.nvim_set_keymap("n", "<C-h>", "<cmd>BufferLineCyclePrev<CR>", {noremap=true, silent=true})
 vim.api.nvim_set_keymap("n", "<C-w>", "<cmd>bdelete<CR>", {noremap=true, silent=true})
 vim.api.nvim_set_keymap("n", "<C-t>", "<cmd>tabnew<CR>", {noremap=true, silent=true})
-vim.api.nvim_set_keymap("n", "<C-t>", "<cmd>tabnew<CR>", {noremap=true, silent=true})
+
+require'alpha'.setup(require'alpha.themes.startify'.config)
+
+require("notify").setup{}
+
+require("sidebar-nvim").setup({
+        open = true,
+        hide_statusline = true,
+        side = "right",
+        sections = {"datetime", "files", "diagnostics", "git", "symbols"},
+        datetime = {format = "%a %b %d, %H:%M", clocks = {{name="Tokyo"}}}
+})
+
+require("indent_blankline").setup{}
