@@ -53,7 +53,7 @@ require('lualine').setup {
       path = 0 -- 0 = just filename, 1 = relative path, 2 = absolute path
     }},
     lualine_x = {
-      { 'diagnostics', sources = {"nvim_diagnostic"}, symbols = {error = ' ', warn = ' ', info = ' ', hint = ' '} },
+      { 'diagnostics', sources = {"nvim_diagnostic"}, symbols = {error = '  ', warn = '  ', info = '  ', hint = '  '} },
       'encoding',
       'filetype'
     },
@@ -78,10 +78,10 @@ require('lualine').setup {
 
 
 require('lspsaga').setup{
-        error_sign = '',
-  warn_sign = '',
-  hint_sign = '',
-  infor_sign = '',
+        error_sign = '',
+  warn_sign = '',
+  hint_sign = '',
+  infor_sign = '',
   border_style = "round",
 }
 
