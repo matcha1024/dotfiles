@@ -1,18 +1,52 @@
 # Aliases
 alias vim="nvim"
 alias vi="nvim"
-alias c="clear"
 
-# Bobthefish (Powerline) settings
-set -g theme_color_scheme solarized
-set -g theme_display_git no
-set -g theme_display_git_dirty no
-set -g theme_display_git_untracked no
-set -g theme_display_user yes
-set -g theme_display_jobs_verbose no
-set -g fish_prompt_pwd_dir_length 0
-set -g theme_project_dir_length 3
-set -g theme_display_cmd_duration no
-set -g theme_avoid_ambiguous_glyphs yes
-set -g theme_display_date no
-set -g theme_show_exit_status no
+# pure settings
+set --universal pure_threshold_command_duration 200000000
+
+# Pyenv
+set -gx PYENV_ROOT "$HOME/.pyenv"
+set -x PATH $PATH "$PYENV_ROOT/shims"
+set -x PATH $PATH "$PYENV_ROOT/bin"
+status --is-interactive; and . (pyenv init - | psub)
+
+# Cargo
+set -x PATH $PATH "$HOME/.cargo/bin"
+
+# vivid
+set -Ux LS_COLORS (vivid generate nord)
+
+# TokyoNight Color Palette
+set -l foreground c0caf5
+set -l selection 33467C
+set -l comment 565f89
+set -l red f7768e
+set -l orange ff9e64
+set -l yellow e0af68
+set -l green 9ece6a
+set -l purple 9d7cd8
+set -l cyan 7dcfff
+set -l pink bb9af7
+
+# Syntax Highlighting Colors
+set -g fish_color_normal $foreground
+set -g fish_color_command $cyan
+set -g fish_color_keyword $pink
+set -g fish_color_quote $yellow
+set -g fish_color_redirection $foreground
+set -g fish_color_end $orange
+set -g fish_color_error $red
+set -g fish_color_param $purple
+set -g fish_color_comment $comment
+set -g fish_color_selection --background=$selection
+set -g fish_color_search_match --background=$selection
+set -g fish_color_operator $green
+set -g fish_color_escape $pink
+set -g fish_color_autosuggestion $comment
+
+# Completion Pager Colors
+set -g fish_pager_color_progress $comment
+set -g fish_pager_color_prefix $cyan
+set -g fish_pager_color_completion $foreground
+set -g fish_pager_color_description $comment
