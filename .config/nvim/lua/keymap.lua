@@ -1,5 +1,5 @@
 local set_keymap = function(mode, lhs, rhs, opts)
-        vim.api.nvim_set_keymap(mode, lhs, rhs, opts)
+	vim.api.nvim_set_keymap(mode, lhs, rhs, opts)
 end
 local opts = { noremap = true, silent = true }
 
