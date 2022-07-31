@@ -1,10 +1,9 @@
 ----- lualine.config -----
 require("lualine").setup({
 	options = {
-		theme = "tokyonight",
 		icons_enabled = true,
-		section_separators = { left = "", right = "" },
-		component_separators = { left = "", right = "" },
+		section_separators = { left = "", right = "" },
+		component_separators = { left = "", right = "" },
 		disabled_filetypes = {},
 	},
 	sections = {
@@ -55,6 +54,7 @@ require("lspsaga").setup({
 	infor_sign = "",
 	border_style = "round",
 	code_action_icon = "● ",
+	highlight_prefix = false,
 })
 
 ----- cmp.config -----
@@ -132,16 +132,15 @@ require("toggleterm").setup({
 	close_on_exit = true, -- close the terminal window when the process exits
 })
 
------ lsp_installer.config -----
-local lsp_installer = require("nvim-lsp-installer")
-local lspconfig = require("lspconfig")
-lsp_installer.setup()
-for _, server in ipairs(lsp_installer.get_installed_servers()) do
-	lspconfig[server.name].setup({
-		capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities()),
-		on_attach = on_attach,
-	})
-end
+----- lsp config -----
+require("mason").setup({})
+
+require("mason-lspconfig").setup({})
+require("mason-lspconfig").setup_handlers({
+	function(server_name)
+		require("lspconfig")[server_name].setup({})
+	end,
+})
 
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
 	virtual_text = true,
@@ -167,7 +166,7 @@ require("bufferline").setup({
 })
 
 ----- alpha.config -----
-require("alpha").setup(require("alpha.themes.startify").config)
+require("alpha").setup(require("alpha.themes.dashboard").config)
 
 ----- notify.config -----
 require("notify").setup({})
@@ -175,7 +174,7 @@ require("notify").setup({})
 ----- sidebar-nvim.config -----
 require("sidebar-nvim").setup({
 	open = true,
-	hide_statusline = true,
+	hide_statusline = false,
 	side = "right",
 	sections = { "datetime", "files", "diagnostics", "git", "symbols" },
 	datetime = { format = "%a %b %d, %H:%M:%S", clocks = { { name = "Tokyo" } } },
@@ -208,5 +207,14 @@ require("formatter").setup({
 require("trouble").setup({})
 
 ----- rust-tools.config -----
-require("rust-tools").setup({})
-
+require("rust-tools").setup({
+	tools = {
+		inlay_hints = {
+			parameter_hints_prefix = " ",
+			other_hints_prefix = " ",
+		},
+		hover_actions = {
+			auto_focus = true,
+		},
+	},
+})
