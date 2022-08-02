@@ -132,8 +132,29 @@ require("toggleterm").setup({
 	close_on_exit = true, -- close the terminal window when the process exits
 })
 
------ lsp config -----
-require("mason").setup({})
+----- mason.config -----
+local mason = require("mason")
+local mason_package = require("mason-core.package")
+local mason_registry = require("mason-registry")
+local null_ls = require("null-ls")
+
+mason.setup({})
+
+local null_sources = {}
+
+for _, package in ipairs(mason_registry.get_installed_packages()) do
+	local package_categories = package.spec.categories[1]
+	if package_categories == mason_package.Cat.Formatter then
+		table.insert(null_sources, null_ls.builtins.formatting[package.name])
+	end
+	if package_categories == mason_package.Cat.Linter then
+		table.insert(null_sources, null_ls.builtins.diagnostics[package.name])
+	end
+end
+
+null_ls.setup({
+	sources = null_sources,
+})
 
 require("mason-lspconfig").setup({})
 require("mason-lspconfig").setup_handlers({
@@ -185,23 +206,6 @@ require("indent_blankline").setup({})
 
 ----- scrollbar.config -----
 require("scrollbar").setup()
-
------ formatter.config -----
-local util = require("formatter.util")
-require("formatter").setup({
-	logging = true,
-	log_level = vim.log.levels.WARN,
-	filetype = {
-		lua = { require("formatter.filetypes.lua").stylua },
-		rust = { require("formatter.filetypes.rust").rustfmt },
-
-		["*"] = {
-			-- "formatter.filetypes.any" defines default configurations for any
-			-- filetype
-			require("formatter.filetypes.any").remove_trailing_whitespace,
-		},
-	},
-})
 
 ----- trouble.config -----
 require("trouble").setup({})
