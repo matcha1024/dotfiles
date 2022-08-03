@@ -3,7 +3,7 @@ local set_keymap = function(mode, lhs, rhs, opts)
 end
 local opts = { noremap = true, silent = true }
 
-set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.format()<CR>", opts)
+set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.format()<CR><cmd>Lspsaga toggle_virtual_text<CR>", opts)
 set_keymap("n", "<C-l>", "<cmd>BufferLineCycleNext<CR>", opts)
 set_keymap("n", "<C-h>", "<cmd>BufferLineCyclePrev<CR>", opts)
 set_keymap("n", "<C-w>", "<cmd>bdelete<CR>", opts)
